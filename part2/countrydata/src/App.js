@@ -10,6 +10,10 @@ const App = () => {
   const handleFilterInput = (event) => {
     setSearchFilter(event.target.value)
   }
+
+  const setSingleCountry = (name) => {
+    setSearchFilter(name)
+  }
   
   useEffect(() => {
       axios
@@ -20,7 +24,7 @@ const App = () => {
   return (
     <div>
       <Filter value={searchFilter} handler={handleFilterInput}/>
-      <Display countries={countries} setCountries={setCountries} searchFilter={searchFilter}/>
+      <Display countries={countries} setSingleCountry={setSingleCountry} searchFilter={searchFilter}/>
     </div>
   )
 }
