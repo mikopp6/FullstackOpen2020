@@ -14,15 +14,12 @@ const App = () => {
   const [ successMessage, setSuccessMessage ] = useState(null)
 
   useEffect(() => {
-    console.log('effect')
     personService
       .getAll()
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])  
-  console.log('render', persons.length, 'persons')
 
   const handleNameInput = (event) => {
     setNewName(event.target.value)
@@ -41,7 +38,6 @@ const App = () => {
       personService
         .remove(id)
         .then(response => {
-          console.log(`succesfully removed`)
           setPersons(persons.filter(person => person.id !== id))
           setSuccessMessage(`Deleted '${name}'`)
           setTimeout(() => {

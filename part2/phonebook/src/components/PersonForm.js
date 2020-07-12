@@ -24,7 +24,7 @@ const PersonForm = ({persons, setPersons, newName, setNewName, newNumber, setNew
             }, 5000)
           })
           .catch(error => {
-            setErrorMessage(`'${newName}' was already removed from server`)
+            setErrorMessage(error.response.data.error)
             setTimeout(() => {
               setErrorMessage(null)
             }, 5000)
@@ -38,6 +38,12 @@ const PersonForm = ({persons, setPersons, newName, setNewName, newNumber, setNew
           setSuccessMessage(`Added '${newName}'`)
           setTimeout(() => {
             setSuccessMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)
           }, 5000)
         })
     }
