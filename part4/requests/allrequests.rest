@@ -11,3 +11,16 @@ content-type: application/json
     "url": "testurl.com",
     "likes": 2
 }
+
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "author": "Miko1",
+    "url": "testurl.com",
+    "likes": 2
+}
+
+###
+DELETE http://localhost:3003/api/blogs/5f12be825714b919e027fcff HTTP/1.1
