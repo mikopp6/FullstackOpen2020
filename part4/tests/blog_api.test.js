@@ -185,15 +185,54 @@ describe('user tests, one initial user in db', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.error).toContain('password missing or too short')
+    expect(result.body.error).toContain('password missing')
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd.length).toBe(usersAtStart.length)  
   })
 
+  test('too short username fails', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: '12',
+      name: 'admin123',
+      password: 'salasana'
+    }
+    
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('shorter than the minimum allowed length')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd.length).toBe(usersAtStart.length)  
+  })
+
+  test('too short password fails', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: '123testi',
+      name: 'admin123',
+      password: 'kk'
+    }
+    
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('password too short')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd.length).toBe(usersAtStart.length)  
+  })
 })
-
-
 
 afterAll(() => {
   mongoose.connection.close()
