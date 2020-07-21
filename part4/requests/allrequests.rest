@@ -16,11 +16,14 @@ content-type: application/json
 ###
 POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa28xMjMiLCJpZCI6IjVmMTY4ZGRjMTFjM2NkMmZmYzI0NDExOSIsImlhdCI6MTU5NTMxNjg2MH0.jLQNNuDe6ZvWibxVr1K8hX25AUH59tKlRpigwrih5uY
 
 {
+    "title": "testi-title",
     "author": "Miko1",
     "url": "testurl.com",
-    "likes": 2
+    "likes": 2,
+    "userId": "5f168ddc11c3cd2ffc244119"
 }
 
 ###
