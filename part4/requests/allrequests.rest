@@ -27,7 +27,8 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/5f12be825714b919e027fcff HTTP/1.1
+DELETE http://localhost:3003/api/blogs/5f169cf08d50a20e04edc896 HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa28xMjMiLCJpZCI6IjVmMTY4ZGRjMTFjM2NkMmZmYzI0NDExOSIsImlhdCI6MTU5NTMxNjg2MH0.jLQNNuDe6ZvWibxVr1K8hX25AUH59tKlRpigwrih5uY
 
 
 ###
@@ -49,4 +50,24 @@ content-type: application/json
 {
     "username": "miko123",
     "password": "salasana"
+}
+
+###
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "root",
+    "name": "Sys Admin",
+    "password": "hunter1"
+}
+
+
+###
+POST http://localhost:3003/api/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "root",
+    "password": "hunter1"
 }

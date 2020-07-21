@@ -7,16 +7,21 @@ const api = supertest(app)
 const User = require('../models/user')
 const Blog = require('../models/blog')
 
+beforeEach(async () => {
+  await Blog.deleteMany({})
+  for (let blog of helper.initialBlogs) {
+    let blogObject = new Blog(blog)
+    await blogObject.save()
+  }
+
+  await User.deleteMany({})
+  await api
+    .post('/api/users')
+    .send({ username: 'root', name: 'Sys Admin', password: 'hunter1' })
+})
 
 describe('blog tests', () => {
-  beforeEach(async () => {
-    await Blog.deleteMany({})
-    for (let blog of helper.initialBlogs) {
-      let blogObject = new Blog(blog)
-      await blogObject.save()
-    }
-  })
-  
+
   test('blogs json return', async () => {
     await api
       .get('/api/blogs')
@@ -33,17 +38,26 @@ describe('blog tests', () => {
   })
   
   test('adding valid blog', async () => {
+    const users = await api
+      .get('/api/users')
+    const testUserId = users.body[0].id
+    const getLoginToken = await api
+      .post('/api/login')
+      .send({ username: 'root', password: 'hunter1' })
+    const testToken = getLoginToken.body.token
+
     const newBlog = {
-      _id: '5a422b3a1b54a676234d17f9',
       title: 'Canonical string reduction',
       author: 'Edsger W. Dijkstra',
       url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
       likes: 12,
-      __v: 0
+      __v: 0,
+      userId: testUserId
     }
-  
+
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${testToken}`)
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -57,16 +71,25 @@ describe('blog tests', () => {
   })
   
   test('blog with likes missing defaults it to 0', async () => {
+    const users = await api
+      .get('/api/users')
+    const testUserId = users.body[0].id
+    const getLoginToken = await api
+      .post('/api/login')
+      .send({ username: 'root', password: 'hunter1' })
+    const testToken = getLoginToken.body.token
+
     const newBlog = {
-      _id: '5a422b3a1b54a676234d17f9',
       title: 'Canonical string reduction',
       author: 'Edsger W. Dijkstra',
       url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-      __v: 0
+      __v: 0,
+      userId: testUserId
     }
   
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${testToken}`)
       .send(newBlog)
   
     const blogsAtEnd = await helper.blogsInDb()
@@ -77,23 +100,75 @@ describe('blog tests', () => {
   })
   
   test('blog with title and url missing fails', async () => {
+    const users = await api
+      .get('/api/users')
+    const testUserId = users.body[0].id
+    const getLoginToken = await api
+      .post('/api/login')
+      .send({ username: 'root', password: 'hunter1' })
+    const testToken = getLoginToken.body.token
+
     const newBlog = {
-      _id: '5a422b3a1b54a676234d17f9',
       author: 'Edsger W. Dijkstra',
       likes: 12,
-      __v: 0
+      __v: 0,
+      userId: testUserId
     }
   
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${testToken}`)
       .send(newBlog)
       .expect(400)
   })
   
   test('deleting blog', async () => {
+    const users = await api
+      .get('/api/users')
+    const testUserId = users.body[0].id
+
+    const getLoginToken = await api
+      .post('/api/login')
+      .send({ username: 'root', password: 'hunter1' })
+    const testToken = getLoginToken.body.token
+
+    const newBlog = {
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 12,
+      __v: 0,
+      userId: testUserId
+    }
+
+    console.log(testToken)
+
+    const savedBlog = await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${testToken}`)
+      .send(newBlog)
+
     await api
-      .delete('/api/blogs/5a422aa71b54a676234d17f8')
+      .delete(`/api/blogs/${savedBlog.body.id}`)
+      .set('Authorization', `bearer ${testToken}`)
       .expect(204)
+  })
+
+  test('missing token fails', async () => {
+    const newBlog = {
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 12,
+      __v: 0,
+      userId: '5f16e3acdec6e835f013b86f'
+    }
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', 'bearer ')
+      .send(newBlog)
+      .expect(401)
   })
   
   test('updating blog', async () => {
@@ -114,13 +189,7 @@ describe('blog tests', () => {
 })
 
 
-describe('user tests, one initial user in db', () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
-    const user = new User({ username: 'root', name: 'Sys Admin', password: 'hunter1' })
-    await user.save()
-  })
-
+describe('user tests', () => {
   test('users json return', async () => {
     await api
       .get('/api/users')
