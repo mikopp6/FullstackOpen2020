@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
@@ -91,10 +91,10 @@ const App = () => {
         url: blog.url
       }
 
-    await blogService.update(id, changedBlog)
-    const response = await blogService.getAll()
-    setBlogs(response)
-      
+      await blogService.update(id, changedBlog)
+      const response = await blogService.getAll()
+      setBlogs(response)
+
     } catch (exception) {
       setErrorMessage('Updating blog failed')
       setTimeout(() => {
@@ -107,7 +107,7 @@ const App = () => {
     try {
       await blogService.remove(id)
       setBlogs(blogs.filter(blog => blog.id !== id))
-      setSuccessMessage(`Removed blog succesfully`)
+      setSuccessMessage('Removed blog succesfully')
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
@@ -135,11 +135,11 @@ const App = () => {
         <form onSubmit={handleLogin}>
           <div>
             username:
-              <input type="text" value={username} name="Username" onChange={({ target }) => setUsername(target.value)}/>
+            <input type="text" value={username} name="Username" onChange={({ target }) => setUsername(target.value)}/>
           </div>
           <div>
             password:
-              <input type="password" value={password} name="Password" onChange={({ target }) => setPassword(target.value)}/>
+            <input type="password" value={password} name="Password" onChange={({ target }) => setPassword(target.value)}/>
           </div>
           <button type="submit">login</button>
         </form>

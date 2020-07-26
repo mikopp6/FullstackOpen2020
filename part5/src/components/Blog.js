@@ -25,7 +25,7 @@ const Blog = ({ blog, addLike, removeBlog, userName }) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        {blog.title} {blog.author} 
+        {blog.title} {blog.author}
         <button onClick={() => setBlogVisible(true)}>view</button>
       </div>
       <div style={showWhenVisible}>
@@ -35,10 +35,10 @@ const Blog = ({ blog, addLike, removeBlog, userName }) => {
         likes {blog.likes} <button onClick={addLike}>like</button><br />
         {blog.user.name}<br />
         {userName === blog.user.name &&
-          <button onClick={() => 
-            {if(window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)){
-              removeBlog()
-            }}
+          <button onClick={() =>
+          {if(window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)){
+            removeBlog()
+          }}
           }>remove</button>
         }
       </div>
