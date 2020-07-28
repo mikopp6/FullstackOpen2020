@@ -32,7 +32,7 @@ const Blog = ({ blog, addLike, removeBlog, userName }) => {
         {blog.title} {blog.author}
         <button onClick={() => setBlogVisible(false)}>hide</button><br/>
         {blog.url}<br/>
-        likes {blog.likes} <button onClick={addLike}>like</button><br />
+        likes {blog.likes} <button id='like-button' onClick={addLike}>like</button><br />
         {blog.user.name}<br />
         {userName === blog.user.name &&
           <button onClick={() =>
