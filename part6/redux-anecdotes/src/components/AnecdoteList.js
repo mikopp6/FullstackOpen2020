@@ -13,10 +13,10 @@ const AnecdoteList = () => {
     return anecdotes.filter(anecdote => anecdote.content.includes(filter))
   })
 
-  const vote = (id, content) => {
-    dispatch(addVote(id))
+  const vote = async (anecdote) => {
+    dispatch(addVote(anecdote))
 
-    dispatch(setNotification(`You voted for '${content}'`))
+    dispatch(setNotification(`You voted for '${anecdote.content}'`))
     setTimeout(() => {
       dispatch(removeNotification())
     }, 5000)
@@ -33,7 +33,7 @@ const AnecdoteList = () => {
             </div>
             <div>
               has {anecdote.votes}
-              <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
+              <button onClick={() => vote(anecdote)}>vote</button>
             </div>
           </div>
       )}
