@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Anecdote from './components/Anecdote'
 import AnecdoteList from './components/AnecdoteList'
 import About from './components/About'
 import CreateNew from './components/CreateNew'
@@ -62,6 +63,9 @@ const App = () => {
       </div>
         
       <Switch>
+        <Route path='/anecdotes/:id'>
+          <Anecdote anecdotes={anecdotes}/>
+        </Route>
         <Route path='/create'>
           <CreateNew addNew={addNew} />
         </Route>
