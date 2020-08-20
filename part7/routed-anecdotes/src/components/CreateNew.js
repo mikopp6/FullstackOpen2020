@@ -21,6 +21,12 @@ const CreateNew = (props) => {
     history.push('/')
   }
 
+  const handleReset = () => {
+    content.onReset()
+    author.onReset()
+    info.onReset()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -35,6 +41,7 @@ const CreateNew = (props) => {
         <input {...info}/>
         <br/>
         <button type='submit'>create</button>
+        <input type='reset' onClick={handleReset}/>
       </form>
     </div>
   )
