@@ -5,6 +5,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import { Form, Button } from 'react-bootstrap'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -128,31 +129,29 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
+      <div className='container'>
         <h2>Log in to application</h2>
         <Notification message={errorMessage} identifier={0}/>
         <Notification message={successMessage} identifier={1}/>
-        <form onSubmit={handleLogin}>
-          <div>
-            username:
-            <input id='username' type="text" value={username} name="Username" onChange={({ target }) => setUsername(target.value)}/>
-          </div>
-          <div>
-            password:
-            <input id='password' type="password" value={password} name="Password" onChange={({ target }) => setPassword(target.value)}/>
-          </div>
-          <button id='login-button' type="submit">login</button>
-        </form>
+        <Form onSubmit={handleLogin}>
+          <Form.Group>
+            <Form.Label>username:</Form.Label>
+            <Form.Control type='text' value={username} onChange={({ target }) => setUsername(target.value)}/>
+            <Form.Label>password</Form.Label>
+            <Form.Control type='password' value={password} onChange={({ target }) => setPassword(target.value)}/>
+          </Form.Group>
+          <Button variant='outline-primary' size='sm' type='submit'>login</Button>
+        </Form>
       </div>
     )
   }
 
   return (
-    <div>
+    <div className='container'>
       <h2>Blogs</h2>
       <Notification message={errorMessage} identifier={0}/>
       <Notification message={successMessage} identifier={1}/>
-      <p>{user.name} logged in!<button type="button" onClick={handleLogout}>logout</button></p>
+      <p>{user.name} logged in! <Button variant='outline-primary' size='sm' type="button" onClick={handleLogout}>logout</Button></p>
       {blogForm()}
       {blogs
         .sort((a, b) => parseInt(b.likes) - parseInt(a.likes))

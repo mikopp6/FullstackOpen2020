@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Button } from 'react-bootstrap'
 
 const Blog = ({ blog, addLike, removeBlog, userName }) => {
   const [blogVisible, setBlogVisible] = useState(false)
@@ -26,20 +27,20 @@ const Blog = ({ blog, addLike, removeBlog, userName }) => {
     <div>
       <div style={hideWhenVisible} className='simpleBlog'>
         {blog.title} {blog.author}
-        <button onClick={() => setBlogVisible(true)}>view</button>
+        <Button variant='outline-primary' size='sm' onClick={() => setBlogVisible(true)}>view</Button>
       </div>
       <div style={showWhenVisible} className='extendedBlog'>
         {blog.title} {blog.author}
-        <button onClick={() => setBlogVisible(false)}>hide</button><br/>
+        <Button variant='outline-primary' size='sm' onClick={() => setBlogVisible(false)}>hide</Button><br/>
         {blog.url}<br/>
-        likes {blog.likes} <button id='like-button' onClick={addLike}>like</button><br />
+        likes {blog.likes} <Button variant='outline-primary' size='sm' id='like-button' onClick={addLike}>like</Button><br />
         {blog.user.name}<br />
         {userName === blog.user.name &&
-          <button onClick={() =>
+          <Button variant='outline-primary' size='sm' onClick={() =>
           {if(window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)){
             removeBlog()
           }}
-          }>remove</button>
+          }>remove</Button>
         }
       </div>
     </div>
