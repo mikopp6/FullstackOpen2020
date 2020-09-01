@@ -39,15 +39,14 @@ export const ADD_BOOK = gql`
   }
 `
 
-export const EDIT_NUMBER = gql`
-  mutation editNumber($name: String!, $phone: String!) {
-    editNumber(name: $name, phone: $phone)  {
+export const EDIT_AUTHOR = gql`
+  mutation editAuthor($name: String!, $born: Int!) {
+    editAuthor(
+      name: $name,
+      setBornTo: $born
+    ) {
       name
-      phone
-      address {
-        street
-        city
-      }
+      born
       id
     }
   }

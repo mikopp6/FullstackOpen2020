@@ -1,10 +1,10 @@
 import React from 'react'
+import AuthorForm from './AuthorForm'
 import { ALL_AUTHORS } from '../queries'
 import { useQuery } from '@apollo/client'
 
 const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
-  console.log(result)
 
   if (!props.show) {
     return null
@@ -39,7 +39,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-
+    <AuthorForm nameOptions={authors.map(a => ({value: a.name, label: a.name}))}/>
     </div>
   )
 }
