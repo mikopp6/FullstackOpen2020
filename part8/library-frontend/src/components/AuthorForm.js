@@ -23,7 +23,7 @@ const AuthorForm = (nameOptions) => {
       <form onSubmit={submit}>
       <div>
         name
-        <Select options={nameOptions.nameOptions} onChange={setName} />
+        <Select value={name} options={nameOptions.nameOptions} onChange={setName} />
       </div>
       <div>
         born
