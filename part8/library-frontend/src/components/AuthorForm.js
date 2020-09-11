@@ -4,11 +4,16 @@ import { useMutation } from '@apollo/client'
 
 import { EDIT_AUTHOR } from '../queries'
 
-const AuthorForm = (nameOptions) => {
+const AuthorForm = (props) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
 
-  const [ editAuthor ] = useMutation(EDIT_AUTHOR)
+  const [ editAuthor ] = useMutation(EDIT_AUTHOR, {
+    onError: (error) => {
+      props.notify(error.message)
+    }
+  })
+
 
   const submit = (event) => {
     event.preventDefault()
@@ -23,7 +28,7 @@ const AuthorForm = (nameOptions) => {
       <form onSubmit={submit}>
       <div>
         name
-        <Select value={name} options={nameOptions.nameOptions} onChange={setName} />
+        <Select value={name} options={props.nameOptions} onChange={setName} />
       </div>
       <div>
         born
