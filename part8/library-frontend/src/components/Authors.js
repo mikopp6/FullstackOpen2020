@@ -39,7 +39,9 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-    <AuthorForm nameOptions={authors.map(a => ({value: a.name, label: a.name}))} notify={props.notify}/>
+      {props.token &&
+        <AuthorForm nameOptions={authors.map(a => ({value: a.name, label: a.name}))} notify={props.notify}/>
+      }
     </div>
   )
 }

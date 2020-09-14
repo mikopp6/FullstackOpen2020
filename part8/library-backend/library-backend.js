@@ -2,8 +2,12 @@ const { ApolloServer, UserInputError, gql, AuthenticationError } = require('apol
 const mongoose = require('mongoose')
 require ('dotenv').config()
 
+const jwt = require('jsonwebtoken')
+const JWT_SECRET = 'REPLACE_WITH_SECRET_KEY'
+
 const Author = require('./models/author')
 const Book = require('./models/book')
+const User = require('./models/user')
 
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
@@ -67,6 +71,7 @@ const typeDefs = gql`
     ): Author
     createUser(
       username: String!
+      favoriteGenre: String!
     ): User
     login(
       username: String!
@@ -156,7 +161,7 @@ const resolvers = {
       return author
     },
     createUser: (root, args) => {
-      const user = new User({ username: args.username })
+      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
       
       return user.save()
         .catch(error => {
