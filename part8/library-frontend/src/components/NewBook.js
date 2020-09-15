@@ -13,6 +13,9 @@ const NewBook = (props) => {
     refetchQueries: [ {query: ALL_AUTHORS}, {query: ALL_BOOKS} ],
     onError: (error) => {
       props.notify(error.message)
+    },
+    update: (store, response) => {
+      props.updateCacheWith(response.data.addBook)
     }
   })
 

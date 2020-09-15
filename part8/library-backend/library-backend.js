@@ -5,9 +5,6 @@ require ('dotenv').config()
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = 'REPLACE_WITH_SECRET_KEY'
 
-const { PubSub } = require('apollo-server')
-const pubsub = new PubSub()
-
 const Author = require('./models/author')
 const Book = require('./models/book')
 const User = require('./models/user')
@@ -87,6 +84,9 @@ const typeDefs = gql`
   }
 `
 
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
+
 const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
@@ -146,7 +146,7 @@ const resolvers = {
         })
       }
 
-      pubsub.publish('BOOK_ADDED', { bookAdded: book})
+      pubsub.publish('BOOK_ADDED', { bookAdded: book })
 
       return book
     },
