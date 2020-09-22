@@ -1,29 +1,37 @@
 interface Result {
-  periodLength: number,
-  trainingDays: number,
-  success: boolean,
-  rating: number,
-  ratingDescription: String,
-  target: number,
-  average: number
+  periodLength: number;
+  trainingDays: number;
+  success: boolean;
+  rating: number;
+  ratingDescription: String;
+  target: number;
+  average: number;
+}
+
+const parseExerciseArguments = (args: Array<String>): Array<number> => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+  const hours = process.argv.slice(2).map(value => Number(value));
+  if (hours.some(isNaN)) throw new Error('Provided values were not numbers!');
+  return hours;
 }
 
 const calculateExercises = (hours: Array<number>): Result => {
-  const periodLength = hours.length
-  const trainingDays = hours.filter(val => val !== 0).length
-  const target = 2
-  const average = hours.reduce((a,b) => a + b) / periodLength
-  const success = average >= target
+  const target = hours[0];
+  hours = hours.slice(1);
+  const periodLength = hours.length;
+  const trainingDays = hours.filter(val => val !== 0).length;
+  const average = hours.reduce((a,b) => a + b) / periodLength;
+  const success = average >= target;
 
-  let rating = 1
-  let ratingDescription = 'Failed, try again next week'
+  let rating = 1;
+  let ratingDescription = 'Failed, try again next week';
 
   if (success) {
-    rating = 3
-    ratingDescription = 'Great Work!'
+    rating = 3;
+    ratingDescription = 'Great Work!';
   } else if (average > target*0.75) {
-    rating = 2
-    ratingDescription = 'Not too bad but could be better'
+    rating = 2;
+    ratingDescription = 'Not too bad but could be better';
   }
 
   return {
@@ -37,4 +45,10 @@ const calculateExercises = (hours: Array<number>): Result => {
   }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1]))
+
+try {
+  const hours = parseExerciseArguments(process.argv);
+  console.log(calculateExercises(hours));
+} catch (error) {
+  console.log('Error: ', error.message);
+}
