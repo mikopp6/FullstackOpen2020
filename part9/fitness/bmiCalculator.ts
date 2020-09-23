@@ -1,25 +1,13 @@
+const calculateBmi = (args: Array<string>) : string => {
+  if (args.length < 2 || args.includes('undefined')) throw new Error('Not enough arguments');
+  if (args.length > 2) throw new Error('Too many arguments');
 
-interface values {
-  height: number;
-  weight: number;
-}
+  const height: number = parseInt(args[0]);
+  const weight: number = parseInt(args[1]);
 
-const parseMeasurementsArguments = (args: Array<String>): values => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  if (args.length > 4) throw new Error('Too many arguments');
+  if (isNaN(height) || isNaN(weight)) throw new Error('Provided values were not numbers!');
 
-  if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-    return {
-      height: Number(args[2]),
-      weight: Number(args[3])
-    }
-  } else {
-    throw new Error('Provided values were not numbers!');
-  }
-}
-
-const calculateBmi = (measurements: values) : String => {
-  const BMI = measurements.weight/((measurements.height/100)**2);
+  const BMI = weight/((height/100)**2);
 
   switch(true) {
     case (BMI <= 18.5):
@@ -33,11 +21,6 @@ const calculateBmi = (measurements: values) : String => {
     default:
       throw new Error('Invalid parameters');
   }
-}
+};
 
-try {
-  const measurements = parseMeasurementsArguments(process.argv);
-  console.log(calculateBmi(measurements));
-} catch (error) {
-  console.log('Error: ', error.message);
-}
+export default calculateBmi;
