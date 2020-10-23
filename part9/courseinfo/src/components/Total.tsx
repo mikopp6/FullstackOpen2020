@@ -4,12 +4,12 @@ interface TotalProps {
   courseParts: Array<{name: string; exerciseCount: number}>;
 }
 
-const Total: React.FC<TotalProps> = (props) => {
+const Total: React.FC<TotalProps> = ({ courseParts }) => {
   return (
     <div>
       <p>
         Number of exercises{" "}
-        {props.courseParts.reduce((carry, part) => carry + part.exerciseCount, 0)}
+        {courseParts.reduce((carry, part) => carry + part.exerciseCount, 0)}
       </p>
     </div>
   )
