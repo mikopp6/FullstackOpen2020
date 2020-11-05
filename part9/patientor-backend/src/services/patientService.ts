@@ -24,7 +24,6 @@ const getSingleEntry = ( id : string ): Patient => {
   }
 
   const resultEntries = {...result, entries: []};
-
   return resultEntries;
 };
 

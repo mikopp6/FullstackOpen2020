@@ -8,6 +8,7 @@ import { useStateValue } from "./state";
 import { Patient } from "./types";
 
 import PatientListPage from "./PatientListPage";
+import SinglePatient from "./SinglePatient";
 
 const App: React.FC = () => {
   const [, dispatch] = useStateValue();
@@ -37,8 +38,9 @@ const App: React.FC = () => {
           </Button>
           <Divider hidden />
           <Switch>
-            <Route path="/" render={() => <PatientListPage />} />
+            <Route path="/" exact render={() => <PatientListPage />} />
           </Switch>
+          <Route path="/patients/:id" render={() => <SinglePatient />} />
         </Container>
       </Router>
     </div>
